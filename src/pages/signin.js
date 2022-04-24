@@ -23,14 +23,16 @@ export default function Signin() {
       .auth()
       .signInWithEmailAndPassword(emailAddress, password)
       .then(() => {
-        window.location.href = ROUTES.BROWSE
-        // history.push(ROUTES.BROWSE);
+        console.log('time',new Date().toLocaleTimeString());
+        // window.location.href = ROUTES.BROWSE
+        history.replace({pathname:ROUTES.BROWSE});
       })
       .catch((error) => {
         setEmailAddress('');
         setPassword('');
         setError(error.message);
       });
+
   };
 
   return (

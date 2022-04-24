@@ -9,7 +9,8 @@ const CountdownTimer = ({ targetDate }) => {
   const user = firebase.auth().currentUser || {};
 
   function expiredNotice() {
-    alert("Time Up")
+    firebase.auth().signOut()
+    window.location.href = '/signup'
   };
 
   const DateTimeDisplay = ({ value, type, isDanger }) => {
@@ -25,7 +26,7 @@ const CountdownTimer = ({ targetDate }) => {
     return (
       <div className="show-counter">
         <a
-          href="https://tapasadhikary.com"
+          href=""
           target="_blank"
           rel="noopener noreferrer"
           className="countdown-link"
