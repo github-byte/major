@@ -23,9 +23,8 @@ export default function Signin() {
       .auth()
       .signInWithEmailAndPassword(emailAddress, password)
       .then(() => {
-        console.log('time',new Date().toLocaleTimeString());
-        // window.location.href = ROUTES.BROWSE
-        history.replace({pathname:ROUTES.BROWSE});
+        window.location.href = ROUTES.BROWSE
+        // history.push({pathname:ROUTES.BROWSE});
       })
       .catch((error) => {
         setEmailAddress('');
