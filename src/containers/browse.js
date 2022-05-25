@@ -94,7 +94,7 @@ export function BrowseContainer({ slides }) {
 
   const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS
 
-  return profile.displayName ? (
+  return profile.photoURL ? (
     <>
       {loading ? <Loading src={user.photoURL} /> : <Loading.ReleaseBody />}
 
@@ -174,16 +174,15 @@ export function BrowseContainer({ slides }) {
           </Header.Group>
         </Header.Frame>
         <Header.Feature watchList={true}>
-        </Header.Feature>solid
-
+        </Header.Feature>
       </Header>}
 
       {!isWatchList && <Card.Group>
         {slideRows.map((slideItem) => (
-          <Card key={`${category}-${slideItem.title.toLowerCase()}`}>
+          <Card key={`${category}-${(slideItem.title || "").toLowerCase()}`}>
             <Card.Title>{slideItem.title}</Card.Title>
             <Card.Entities>
-              {slideItem.data.map((item) => (
+              {(slideItem.data || []).map((item) => (
                 <Card.Item key={item.docId} item={item}>
                   <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
                   <Card.Meta>

@@ -66,44 +66,46 @@ export default function Signup() {
       let text = result.data.text
       console.log('my text',result)
       setText(text);
-      DOBAndMobileNumberextraction();
+      DOBAndMobileNumberextraction(text);
       // setShowPhone({status:true})
   
     })
   }
 
-  function DOBAndMobileNumberextraction(){
+  function DOBAndMobileNumberextraction(text=''){
     // var text = document.getElementById("mydemo").innerText;
     var resultindex1 = text.indexOf("DOB:");
     // alert(text)
-    if(resultindex1==-1){
-      // document.getElementById("DOB").innerHTML = "NA";
-      setShowPhone({...showPhone,status:true})
-    }
-    else{
+    // if(resultindex1==-1){
+    //   // document.getElementById("DOB").innerHTML = "NA";
+    //   setShowPhone({...showPhone,status:true})
+    // }
+    {
       let desiredstartindex1 = resultindex1+5;
       let desiredDOB = "";
-      for(let i=desiredstartindex1; i<text.length && text[i]!=' '; i++){
+      for(let i=desiredstartindex1; i<text.length && text[i] != ' '; i++){
         console.log(text[i]);
         desiredDOB += text[i];
       }
       let year = desiredDOB.slice(6,10)
       let age = 2022 - Number(year) 
-      console.log('my age',age)
+      console.log('my age',text,age)
+      window.localStorage.setItem("age",age)
       setShowPhone({status:true,age:age})
     }
 
-    var resultindex2 = text.indexOf("Mobile:");
+    var resultindex2 = text.indexOf("Mobie:");
     console.log('my result',resultindex2);
-    if(resultindex2==-1){
+    if(resultindex2 == -1){
     // document.getElementById("MobileNumber").innerHTML = "NA";
     }
     else{
       let desiredstartindex2 = resultindex2+8;
       let desiredMobileNo = "";
-      for(let i=desiredstartindex2; i<text.length && text[i]!=' '; i++){
+      for(let i=desiredstartindex2-1; i<text.length && text[i]!=' '; i++){
         desiredMobileNo += text[i];
       }
+      console.log("desrs",desiredMobileNo)
       // setShowPhone({})
           // document.getElementById("MobileNumber").innerHTML = desiredMobileNo;
     }
@@ -154,7 +156,7 @@ export default function Signup() {
       // User signed in successfully.
       const user = result.user;
       user.updateProfile({
-        displayName: firstName + "|" + showPhone['age'],
+        displayName: firstName,
         photoURL: Math.floor(Math.random() * 5) + 1,
         // age: age
       })
@@ -215,7 +217,7 @@ export default function Signup() {
           <div id="recaptcha-container"></div>
           <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit>
         </div> 
-        : <Form.Base onSubmit={handleSignup} method="POST">
+        : <Form.Base onSubmit={handleClick} method="POST">
             <Form.Input
               placeholder="First Name"
               value={firstName}
@@ -234,18 +236,18 @@ export default function Signup() {
               onChange={({ target }) => setPassword(target.value)}
             />
 
-          <h3>Upload Aadhar Card</h3>
-              <img 
-                src={imagePath} className="App-logo" alt="logo"
-                ref={imageRef} 
-                />
+          <h3 style={{color:'grey'}}>Upload Aadhar Card</h3>
+              <img src={imagePath} className="App-logo" ref={imageRef} />
               {/* <h3>Canvas</h3> */}
               <canvas ref={canvasRef} width={700} height={300} style={{display:'none'}}></canvas>
               {/* <div className="pin-box">
                 <p style={{color:'white'}} id="mydemo"> {text} </p>
               </div> */}
-              <input type="file" onChange={handleChange} />
-              <button onClick={handleClick} style={{height:50}}>Convert to text</button>
+              <div style={{display:'flex',justifyContent:'center',}}>
+              {!imagePath && <i class="fa-solid fa-upload" style={{fontSize:"100px"}} onClick={() => document.getElementById("selectFile").click()}></i>}
+                <input type="file" id="selectFile" onChange={handleChange} style={{display:'none'}}/>
+              </div>
+              {/* <button onClick={handleClick} style={{height:50}}>Convert to text</button> */}
             <Form.Submit disabled={isInvalid} type="submit">
               Sign Up
             </Form.Submit>

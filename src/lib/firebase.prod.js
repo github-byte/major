@@ -21,7 +21,6 @@ const config = {
   apiKey: "AIzaSyCkq1uIy6aWxTkzEiy0HCst6h0pGraElMk",
   authDomain: "fp-2-3f4f9.firebaseapp.com",
   projectId: "fp-2-3f4f9",
-  //https://fp-2-3f4f9-default-rtdb.firebaseio.com/
   databaseURL:"https://fp-2-3f4f9-default-rtdb.firebaseio.com/",
   storageBucket: "fp-2-3f4f9.appspot.com",
   messagingSenderId: "236110241782",

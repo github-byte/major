@@ -5,6 +5,9 @@ import * as ROUTES from '../constants/routes';
 import logo from '../image2vector.svg'
 
 export function SelectProfileContainer({ user, setProfile }) {
+
+  let newAge = window.localStorage.getItem("age");
+  let msg = Number(newAge) > 18 ? "Loaded for adults section" : "Loading for kids section"
   return (
     <>
       <Header bg={false}>
@@ -19,6 +22,7 @@ export function SelectProfileContainer({ user, setProfile }) {
           <Profiles.User onClick={() => setProfile({ displayName: user.displayName, photoURL: user.photoURL })}>
             <Profiles.Picture src={user.photoURL} />
             <Profiles.Name>{user.displayName}</Profiles.Name>
+            <Profiles.Name>{msg}</Profiles.Name>
           </Profiles.User>
         </Profiles.List>
       </Profiles>
