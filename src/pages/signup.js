@@ -244,7 +244,7 @@ export default function Signup() {
                 <p style={{color:'white'}} id="mydemo"> {text} </p>
               </div> */}
               <div style={{display:'flex',justifyContent:'center',}}>
-              {!imagePath && <i class="fa-solid fa-upload" style={{fontSize:"100px"}} onClick={() => document.getElementById("selectFile").click()}></i>}
+              {!imagePath && <i class="fa-solid fa-upload" style={{fontSize:"100px",cursor:'pointer'}} onClick={() => document.getElementById("selectFile").click()}></i>}
                 <input type="file" id="selectFile" onChange={handleChange} style={{display:'none'}}/>
               </div>
               {/* <button onClick={handleClick} style={{height:50}}>Convert to text</button> */}

@@ -8,6 +8,9 @@ import image2vector from '../image2vector.svg'
 import { FirebaseContext } from '../context/firebase';
 import { SelectProfileContainer } from './profiles';
 import { FooterContainer } from './footer';
+import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import CountdownTimer from './countDownTimer'
 
 export function BrowseContainer({ slides }) {
@@ -20,6 +23,22 @@ export function BrowseContainer({ slides }) {
   const [watchListIds, setWatchListIds] = useState([])
   const [watchList, setWatchList] = useState([])
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const SimpleModal = () => {
+    return(<><Snackbar open={open} autoHideDuration={6000} onClose={()=> setOpen(false)}>
+      <Alert onClose={()=> setOpen(false)} severity="error">
+        Your streaming time is over!!
+      </Alert>
+    </Snackbar></>)
+  }
+
+  const [timeLeft, setTimeLeft] = useState(4 * 60 * 60 * 1000)
+  const [timeInterval, setTimeInterval] = useState(0)
   const { firebase } = useContext(FirebaseContext);
   const user = firebase.auth().currentUser || {};
 
@@ -79,21 +98,56 @@ export function BrowseContainer({ slides }) {
 
   const handleClick = () => {
     firebase.auth().signOut()
+
+    // let newUser = 4*60*60*1000;
+    // let userTime = 0 
+    // let timeInt =0;
+    // //time spend now
+    // var starCountRef = firebase.database().ref('users/' + user.uid);
+    // console.log('my data2',starCountRef)
+    // starCountRef.on('value', (snapshot) => {
+    //   const data = snapshot.val();
+    //   if(data){
+    //     console.log('my data3',snapshot,new Date(data['loginIn']),data)
+    //     // let timeInt = data.logoutTime - data.loginTime;
+    //     if(!data.timeSpend || new Date(data.loggedIn).getDate() != new Date().getDate() || new Date(data.loggedIn).getMonth() != new Date().getMonth()){
+    //       timeInt = 0;
+    //     }
+    //     else{
+    //       timeInt = timeInt + data.timeSpend;
+    //     }
+    //     console.log("my time",data.loggedIn)
+    //   }
+    // });
+
+
+    // firebase.auth().signOut().then(()=> {
+    //       firebase.database().ref('users/' + user.uid).update({
+    //       timeSpend:timeInt,
+    //       loggedIn:new Date().getTime()
+    //    }).then(()=> console.log('time noted2',dateTimeAfterThreeDays)).catch(()=> console.log("error"));
+    //    }).catch((err)=> console.log(err))
+      //   window.location.href = '/signin'
     window.location.href = '/signup'
   }
 
   const handleSeries = () => {
     setCategory('series');
     setIsWatchList(false)
-    // window.location.href = ROUTES.BROWSE
     history.push('/browse')
   }
 
-  const THREE_DAYS_IN_MS = 60  * 60 * 1000;
+  const THREE_DAYS_IN_MS = 10 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
-  const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS
+  function expiredNotice() {
+    setOpen(true)
+    firebase.auth().signOut()
+    window.location.href = '/signup'
+  };
 
+  const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS
+  if(open) return <SimpleModal/>
   return profile.photoURL ? (
     <>
       {loading ? <Loading src={user.photoURL} /> : <Loading.ReleaseBody />}
@@ -126,7 +180,7 @@ export function BrowseContainer({ slides }) {
                 </Header.Group>
               </Header.Dropdown>
             </Header.Profile>
-            <CountdownTimer targetDate={dateTimeAfterThreeDays} />
+            <CountdownTimer targetDate={dateTimeAfterThreeDays} expiredNotice={expiredNotice}/>
           </Header.Group>
         </Header.Frame>
 
@@ -170,6 +224,7 @@ export function BrowseContainer({ slides }) {
                   <Header.TextLink onClick={() => handleClick()}>Sign out</Header.TextLink>
                 </Header.Group>
               </Header.Dropdown>
+              <CountdownTimer targetDate={dateTimeAfterThreeDays} expiredNotice={expiredNotice}/>
             </Header.Profile>
           </Header.Group>
         </Header.Frame>
@@ -231,7 +286,8 @@ export function BrowseContainer({ slides }) {
           </Card>
           })}
       </Card.Group>}
-      <FooterContainer />
+      <FooterContainer />    
+    {/* {open && <SimpleModal/>} */}
     </>
   ) : (
     <SelectProfileContainer user={user} setProfile={setProfile} />
