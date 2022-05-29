@@ -22,11 +22,12 @@ export default function Signup() {
   const [mynumber, setnumber] = useState("");
   const [otp, setotp] = useState({status:false,otp:''});
   const [show, setshow] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [timeLimit,setTimeLimit] = useState("")
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   console.log('path',imagePath.length)
-  const isInvalid = firstName === '' || password === '' || emailAddress === '' || imagePath.length <= 0;
-
+  const isInvalid = firstName === '' || password === '' || emailAddress === '' || imagePath.length <= 0 || mynumber.length<10;
   const NumInvalid = mynumber.length < 10;
   const OtpValid = otp.length < 6
 
@@ -40,6 +41,30 @@ export default function Signup() {
     setImagePath(URL.createObjectURL(event.target.files[0]));
   }
 
+  const validate = () => {
+    let err = false
+    if(password.length !== confirmPassword.length) {
+      err = true
+      setError("Password do not match")
+    }
+    if(timeLimit.length>0){
+      if(isNaN(Number(timeLimit)) ||  Number(timeLimit) < 1) {
+        err = true
+        setError("Please enter valid watch time limit") 
+      }
+      if(Number(timeLimit) > 6) {
+        err = true
+        setError("You can set maximum Time Limit of 6 hours")
+      }
+      return;
+    }
+    if(isNaN(Number(mynumber)) || mynumber.length < 10  || mynumber.length > 10){
+      err = true
+      setError("Please enter valid phone number");
+    }
+    return err
+  }
+
   const handleClick = (e) => {
     e.preventDefault()
     const canvas = canvasRef ? canvasRef.current : "";
@@ -50,6 +75,8 @@ export default function Signup() {
       const dataUrl = canvas.toDataURL("image/jpeg");
     }
 
+    if(validate()) return;
+    timeLimit.length>0 && window.localStorage.setItem("timeLimit",timeLimit)
     Tesseract.recognize(
       imagePath,'eng',
       { 
@@ -202,24 +229,20 @@ export default function Signup() {
         <Form>
           <Form.Title>Sign Up</Form.Title>
           {error && <Form.Error>{error}</Form.Error>}
-          {showPhone['status'] ? <div style={{display:'flex',flexDirection:'column'}}>  
+
+          { show['phone'] &&  otp['status'] ? 
+            <><Form.Input
+                placeholder="Otp"
+                value={otp['otp']}
+                id="otp"
+                onChange={(e) => setotp({status:otp['status'],otp:e.target.value})}/>
+              <Form.Submit disabled={OtpValid} type="submit" onClick={ValidateOtp}>{'Verify Otp' }</Form.Submit>
+            </>
+              :
+  
+            <Form.Base onSubmit={handleClick} method="POST">
             <Form.Input
-            placeholder="Phone"
-            value={mynumber}
-            id="ph"
-            onChange={({ target }) => setnumber(target.value)}
-          />
-          {otp['status'] && <Form.Input
-            placeholder="Otp"
-            value={otp['otp']}
-            id="otp"
-            onChange={(e) => setotp({status:otp['status'],otp:e.target.value})}/>}
-          <div id="recaptcha-container"></div>
-          <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit>
-        </div> 
-        : <Form.Base onSubmit={handleClick} method="POST">
-            <Form.Input
-              placeholder="First Name"
+              placeholder="Your Name"
               value={firstName}
               onChange={({ target }) => setFirstName(target.value)}
             />
@@ -235,8 +258,22 @@ export default function Signup() {
               placeholder="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
+             <Form.Input
+              type="password"
+              value={confirmPassword}
+              autoComplete="off"
+              placeholder="Confirm Password"
+              onChange={({ target }) => setConfirmPassword(target.value)}
+            />
+            <Form.Input
+              type="text"
+              value={timeLimit}
+              autoComplete="off"
+              placeholder="Maximum Watch Time Limit"
+              onChange={({ target }) => setTimeLimit(target.value)}
+            />
 
-          <h3 style={{color:'grey'}}>Upload Aadhar Card</h3>
+            <h5 style={{color:'grey'}}>Upload Aadhar Card</h5>
               <img src={imagePath} className="App-logo" ref={imageRef} />
               {/* <h3>Canvas</h3> */}
               <canvas ref={canvasRef} width={700} height={300} style={{display:'none'}}></canvas>
@@ -244,10 +281,20 @@ export default function Signup() {
                 <p style={{color:'white'}} id="mydemo"> {text} </p>
               </div> */}
               <div style={{display:'flex',justifyContent:'center',}}>
-              {!imagePath && <i class="fa-solid fa-upload" style={{fontSize:"100px",cursor:'pointer'}} onClick={() => document.getElementById("selectFile").click()}></i>}
+              {!imagePath && <i class="fa-solid fa-upload" style={{fontSize:"60px",cursor:'pointer'}} onClick={() => document.getElementById("selectFile").click()}></i>}
                 <input type="file" id="selectFile" onChange={handleChange} style={{display:'none'}}/>
               </div>
               {/* <button onClick={handleClick} style={{height:50}}>Convert to text</button> */}
+              <div style={{display:'flex',flexDirection:'column',marginTop:"30px"}}>  
+                <Form.Input
+                placeholder="Phone"
+                value={mynumber}
+                id="ph"
+                onChange={({ target }) => setnumber(target.value)}
+              />
+              <div id="recaptcha-container"></div>
+              {/* <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit> */}
+            </div> 
             <Form.Submit disabled={isInvalid} type="submit">
               Sign Up
             </Form.Submit>

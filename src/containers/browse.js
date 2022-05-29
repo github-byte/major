@@ -136,8 +136,8 @@ export function BrowseContainer({ slides }) {
     setIsWatchList(false)
     history.push('/browse')
   }
-
-  const THREE_DAYS_IN_MS = 10 * 1000;
+  const hours = window.localStorage.getItem("timeLimit")
+  const THREE_DAYS_IN_MS = hours ? hours * 60 * 60 * 1000 : 4 * 60 * 60 * 1000;
   const NOW_IN_MS = new Date().getTime();
 
   function expiredNotice() {
