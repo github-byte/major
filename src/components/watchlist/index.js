@@ -74,8 +74,6 @@ export default function WatchList({ children, ...restProps }) {
     
 },[add])
 
-
-
 console.log('my obj',watchList)
   return (
     <WatchListContext.Provider value={{ add, setAdd, watchId }}>

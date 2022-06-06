@@ -2,7 +2,7 @@ import React,{useContext, useEffect, useState} from 'react';
 import { FirebaseContext } from '../context/firebase';
 import { useCountdown } from './useCountDown.js';
 
-const CountdownTimer = ({ targetDate,expiredNotice=()=>{} }) => {
+const CountdownTimer = ({ targetDate,expiredNotice=()=>{}, setTimeInHr= () => {} }) => {
   const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
   const { firebase } = useContext(FirebaseContext);
@@ -15,9 +15,20 @@ const CountdownTimer = ({ targetDate,expiredNotice=()=>{} }) => {
       </div>
     );
   };
-  
+  console.log('time log',days,hours,minutes,seconds)
 
-  const ShowCounter = ({ days, hours, minutes, seconds }) => {
+  useEffect(() => {
+    let timeInHours = 0;
+    let minSec = 0;
+    if(seconds>0){
+      minSec = minutes > 0 ? minutes*seconds : seconds;
+    }
+    timeInHours = (hours>0 ? hours * minutes * seconds : minSec) / 3600
+    
+    setTimeInHr(timeInHours)
+  },[minutes])
+
+  const ShowCounter = ({ days, hours }) => {
     return (
       <div className="show-counter">
         <a

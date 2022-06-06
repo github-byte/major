@@ -61,6 +61,26 @@ export function seedDatabase(firebase) {
     maturity: '12',
     slug: 'man-on-wire',
   });
+  firebase.firestore().collection('series').add({
+    id: getUUID(),
+    title: 'Man on Wire',
+    description:
+      "Filmmaker James Marsh masterfully recreates high-wire daredevil Philippe Petit's 1974 stunt walking on a wire across the Twin Towers.",
+    genre: 'documentaries',
+    link: 'https://www.youtube.com/watch?v=Cz6oddi0mts',
+    maturity: '80',
+    slug: 'man-on-wire',
+  });
+  firebase.firestore().collection('series').add({
+    id: getUUID(),
+    title: 'Super Size Me',
+    description:
+      "Director Morgan Spurlock's social experiment in fast-food gastronomy sees him attempting to subsist uniquely on food from the McDonalds",
+    genre: 'documentaries',
+    link: 'https://www.youtube.com/watch?v=GRPSeVyrd68',
+    maturity: '39',
+    slug: 'super-size-me',
+  });
 
   // Comedies
   firebase.firestore().collection('series').add({
@@ -93,6 +113,7 @@ export function seedDatabase(firebase) {
     maturity: '15',
     slug: 'curb-your-enthusiasm',
   });
+
   firebase.firestore().collection('series').add({
     id: getUUID(),
     title: 'Family Guy',
@@ -110,9 +131,10 @@ export function seedDatabase(firebase) {
       'Four young, schoolgoing boys, Stan Marsh, Kyle Broflovski, Eric Cartman and Kenny McCormick, who live in South Park set out on various adventures.',
     genre: 'comedies',
     link: 'https://www.youtube.com/watch?v=fiayfb1rrs0',
-    maturity: '15',
+    maturity: '55',
     slug: 'south-park',
   });
+  
 
   // Children
   firebase.firestore().collection('series').add({
@@ -246,6 +268,16 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('series').add({
     id: getUUID(),
+    title: 'Forrest Gump',
+    description:
+      'Forrest Gump, a man with a low IQ, joins the army for service where he meets Dan and Bubba. However, he cannot stop thinking about his childhood sweetheart Jenny Curran, whose life is messed up.',
+    genre: 'feel-good',
+    link: 'https://www.youtube.com/watch?v=bLvqoHBptjg',
+    maturity: '23',
+    slug: 'forrest-gump',
+  });
+  firebase.firestore().collection('series').add({
+    id: getUUID(),
     title: 'Juno',
     description:
       "Social misfit Juno protects herself with a caustic wit, but her unplanned pregnancy has the teen getting more involved in the lives of her baby's adoptive parents than she expected.",
@@ -256,12 +288,32 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('series').add({
     id: getUUID(),
+    title: 'Juno',
+    description:
+      "Social misfit Juno protects herself with a caustic wit, but her unplanned pregnancy has the teen getting more involved in the lives of her baby's adoptive parents than she expected.",
+    genre: 'feel-good',
+    link: 'https://www.youtube.com/watch?v=K0SKf0K3bxg',
+    maturity: '22',
+    slug: 'juno',
+  });
+  firebase.firestore().collection('series').add({
+    id: getUUID(),
     title: 'Midnight In Paris',
     description:
       'Gil arrives with his fiancee and her family in Paris for a vacation, even as he tries to finish his debut novel. He is beguiled by the city, which takes him to a time past, away from his fiancee.',
     genre: 'feel-good',
     link: 'https://www.youtube.com/watch?v=FAfR8omt-CY',
     maturity: '12',
+    slug: 'midnight-in-paris',
+  });
+  firebase.firestore().collection('series').add({
+    id: getUUID(),
+    title: 'Midnight In Paris',
+    description:
+      'Gil arrives with his fiancee and her family in Paris for a vacation, even as he tries to finish his debut novel. He is beguiled by the city, which takes him to a time past, away from his fiancee.',
+    genre: 'feel-good',
+    link: 'https://www.youtube.com/watch?v=FAfR8omt-CY',
+    maturity: '72',
     slug: 'midnight-in-paris',
   });
   firebase.firestore().collection('series').add({
@@ -310,6 +362,16 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'Kings Speech',
+    description:
+      'King George VI tries to overcome his stammering problem with the help of speech therapist Lionel Logue and makes himself worthy enough to lead his country through World War II.',
+    genre: 'drama',
+    link: 'https://www.youtube.com/watch?v=gSw6ei5tdbg',
+    maturity: '75',
+    slug: 'kings-speech',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'The Revenant',
     description:
       'Hugh Glass, a legendary frontiersman, is severely injured in a bear attack and is abandoned by his hunting crew. He uses his skills to survive and take revenge on his companion, who betrayed him.',
@@ -320,12 +382,32 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'The Revenant',
+    description:
+      'Hugh Glass, a legendary frontiersman, is severely injured in a bear attack and is abandoned by his hunting crew. He uses his skills to survive and take revenge on his companion, who betrayed him.',
+    genre: 'drama',
+    link: 'https://www.youtube.com/watch?v=LoebZZ8K5N0',
+    maturity: '75',
+    slug: 'the-revenant',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'The Social Network',
     description:
       'Mark Zuckerberg creates a social networking site, Facebook, with the help of his friend Eduardo Saverin. But soon, a string of lies tears their relationship apart even as Facebook connects people.',
     genre: 'drama',
     link: 'https://www.youtube.com/watch?v=lB95KLmpLR4',
     maturity: '12',
+    slug: 'the-social-network',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
+    title: 'The Social Network',
+    description:
+      'Mark Zuckerberg creates a social networking site, Facebook, with the help of his friend Eduardo Saverin. But soon, a string of lies tears their relationship apart even as Facebook connects people.',
+    genre: 'drama',
+    link: 'https://www.youtube.com/watch?v=lB95KLmpLR4',
+    maturity: '32',
     slug: 'the-social-network',
   });
 
@@ -352,6 +434,16 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'Gone Girl',
+    description:
+      'Nick Dunne discovers that the entire media focus has shifted on him when his wife Amy Dunne disappears on the day of their fifth wedding anniversary.',
+    genre: 'suspense',
+    link: 'https://www.youtube.com/watch?v=2-_-1nJf8Vg',
+    maturity: '35',
+    slug: 'gone-girl',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'Prisoners',
     description:
       "When the police take time to find Keller Dover's daughter and her friend, he decides to go on a search himself. His desperation leads him closer to finding the truth and also jeopardises his own life.",
@@ -362,12 +454,32 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'Prisoners',
+    description:
+      "When the police take time to find Keller Dover's daughter and her friend, he decides to go on a search himself. His desperation leads him closer to finding the truth and also jeopardises his own life.",
+    genre: 'suspense',
+    link: 'https://www.youtube.com/watch?v=bpXfcTF6iVk',
+    maturity: '75',
+    slug: 'prisoners',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'Seven',
     description:
       'A serial killer begins murdering people according to the seven deadly sins. Two detectives, one new to the city and the other about to retire, are tasked with apprehending the criminal.',
     genre: 'suspense',
     link: 'https://www.youtube.com/watch?v=znmZoVkCjpI',
     maturity: '15',
+    slug: 'seven',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
+    title: 'Seven',
+    description:
+      'A serial killer begins murdering people according to the seven deadly sins. Two detectives, one new to the city and the other about to retire, are tasked with apprehending the criminal.',
+    genre: 'suspense',
+    link: 'https://www.youtube.com/watch?v=znmZoVkCjpI',
+    maturity: '75',
     slug: 'seven',
   });
   firebase.firestore().collection('films').add({
@@ -466,6 +578,16 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'Black Swan',
+    description:
+      'Nina, a ballerina, gets the chance to play the White Swan, Princess Odette. But she finds herself slipping into madness when Thomas, the artistic director, decides that Lily might fit the role better.',
+    genre: 'thriller',
+    link: 'https://www.youtube.com/watch?v=5jaI1XOB-bs',
+    maturity: '34',
+    slug: 'black-swan',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'Nightcrawler',
     description:
       'Louis Bloom, a petty thief, realises that he can make money by capturing photographs of criminal activities and starts resorting to extreme tactics to get them.',
@@ -508,12 +630,32 @@ export function seedDatabase(firebase) {
   });
   firebase.firestore().collection('films').add({
     id: getUUID(),
+    title: 'Blue Valentine',
+    description:
+      'Dean and Cynthia are married with a daughter and their marriage is about to fall apart. Both come from dysfunctional families and struggle to make sense of their relationship.',
+    genre: 'romance',
+    link: 'https://www.youtube.com/watch?v=aILx69WrRhQ',
+    maturity: '35',
+    slug: 'blue-valentine',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
     title: 'La La Land',
     description:
       'Sebastian (Ryan Gosling) and Mia (Emma Stone) are drawn together by their common desire to do what they love. But as success mounts they are faced with decisions that begin...',
     genre: 'romance',
     link: 'https://www.youtube.com/watch?v=0pdqf4P9MB8',
     maturity: '15',
+    slug: 'la-la-land',
+  });
+  firebase.firestore().collection('films').add({
+    id: getUUID(),
+    title: 'La La Land',
+    description:
+      'Sebastian (Ryan Gosling) and Mia (Emma Stone) are drawn together by their common desire to do what they love. But as success mounts they are faced with decisions that begin...',
+    genre: 'romance',
+    link: 'https://www.youtube.com/watch?v=0pdqf4P9MB8',
+    maturity: '55',
     slug: 'la-la-land',
   });
   firebase.firestore().collection('films').add({

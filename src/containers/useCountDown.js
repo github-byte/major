@@ -4,11 +4,12 @@ const useCountdown = (targetDate) => {
   const countDownDate = new Date(targetDate).getTime();
 
   const [countDown, setCountDown] = useState(
-    countDownDate - new Date().getTime()
+    countDownDate > new Date().getTime() ? countDownDate - new Date().getTime() : 0
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
+      if( countDownDate  < new Date().getTime()) return null;
       setCountDown(countDownDate - new Date().getTime());
     }, 1000);
 

@@ -1,17 +1,18 @@
-import React, { useState, useContext, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { FirebaseContext } from '../context/firebase';
 import { Form } from '../components';
 import { HeaderContainer } from '../containers/header';
 import Tesseract from 'tesseract.js';
 import preprocessImage from './preprocess';
 import { FooterContainer } from '../containers/footer';
+import { useParams } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
+import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 export default function Signup() {
-  const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
-
   const [firstName, setFirstName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +27,7 @@ export default function Signup() {
   const [timeLimit,setTimeLimit] = useState("")
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
-  console.log('path',imagePath.length)
+  const [open, setOpen] = React.useState(false);
   const isInvalid = firstName === '' || password === '' || emailAddress === '' || imagePath.length <= 0 || mynumber.length<10;
   const NumInvalid = mynumber.length < 10;
   const OtpValid = otp.length < 6
@@ -34,11 +35,31 @@ export default function Signup() {
   const handleChange = (event) => {
     // if(event.target.files[0] && event.target.files[0].length > 0)
     if(!event){
-      alert(event)
       setError("Add image")
       return
     } 
     setImagePath(URL.createObjectURL(event.target.files[0]));
+  }
+
+  useEffect(()=> {
+    let newString = window.location.search
+    if(newString == "?timerOver"){
+      setOpen(true)
+    }
+  },[])
+
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const SimpleModal = () => {
+    
+    return (<><Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+      <Alert onClose={()=> {setOpen(false)}} severity="error">
+        Your streaming time is over!!
+      </Alert>
+    </Snackbar></>)
   }
 
   const validate = () => {
@@ -48,7 +69,7 @@ export default function Signup() {
       setError("Password do not match")
     }
     if(timeLimit.length>0){
-      if(isNaN(Number(timeLimit)) ||  Number(timeLimit) < 1) {
+      if(isNaN(Number(timeLimit)) ||  Number(timeLimit) < 0) {
         err = true
         setError("Please enter valid watch time limit") 
       }
@@ -66,6 +87,7 @@ export default function Signup() {
   }
 
   const handleClick = (e) => {
+    console.log("in here1")
     e.preventDefault()
     const canvas = canvasRef ? canvasRef.current : "";
     const ctx = canvas ? canvas.getContext('2d') : "";
@@ -94,8 +116,6 @@ export default function Signup() {
       console.log('my text',result)
       setText(text);
       DOBAndMobileNumberextraction(text);
-      // setShowPhone({status:true})
-  
     })
   }
 
@@ -118,6 +138,7 @@ export default function Signup() {
       let age = 2022 - Number(year) 
       console.log('my age',text,age)
       window.localStorage.setItem("age",age)
+      onSignInSubmit();
       setShowPhone({status:true,age:age})
     }
 
@@ -152,7 +173,7 @@ export default function Signup() {
   }
 
    const onSignInSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     configureCaptcha()
     
     const phoneNumber = '+91' + mynumber;
@@ -169,40 +190,38 @@ export default function Signup() {
       // ...
     }).catch((error) => {
       // Error; SMS not sent
-      // console.log(error)
-      alert(error)
-    });
- 
-  }
-// Validate OTP
-  const ValidateOtp = () => {
-    console.log('my new otp',otp['otp'], showPhone['age'])
-    if(!otp['otp']) return
-
-    window.confirmationResult.confirm(otp['otp']).then((result) => {
-      // User signed in successfully.
-      const user = result.user;
-      user.updateProfile({
-        displayName: firstName,
-        photoURL: Math.floor(Math.random() * 5) + 1,
-        // age: age
-      })
-      console.log('my new otp',user)
-      window.location.href= ROUTES.BROWSE
-    
-      console.log('MyUser',JSON.stringify(user));
-    
-      // ...
-    }).catch((error) => {
-      // User couldn't sign in (bad verification code?)
-      // ...
       console.log(error)
     });
   }
 
-  const handleSignup = (event) => {
-    event.preventDefault();
+// Validate OTP
+  const ValidateOtp = () => {
+    console.log('my new otp',otp['otp'], showPhone['age'])
+    if(!otp['otp']) return
+    handleSignup();
+    // window.confirmationResult.confirm(otp['otp']).then((result) => {
+    //   // User signed in successfully.
+    //   const user = result.user;
+    //   user.updateProfile({
+    //     displayName: firstName,
+    //     photoURL: Math.floor(Math.random() * 5) + 1,
+    //     email:emailAddress
+    //     // age: age
+    //   })
+    //   console.log('my new otp',user)
+    //   window.location.href= ROUTES.BROWSE
+    
+    //   console.log('MyUser',JSON.stringify(user));
+    //   // ...
+    // }).catch((error) => {
+    //   // User couldn't sign in (bad verification code?)
+    //   // ...
+    //   console.log(error)
+    // });
+  }
 
+  const handleSignup = (event) => {
+    // event.preventDefault();
     firebase
       .auth()
       .createUserWithEmailAndPassword(emailAddress, password)
@@ -213,7 +232,7 @@ export default function Signup() {
             photoURL: Math.floor(Math.random() * 5) + 1,
           })
           .then(() => {
-            history.push(ROUTES.BROWSE);
+            window.location.href= ROUTES.BROWSE
           })
       )
       .catch((error) => {
@@ -230,7 +249,7 @@ export default function Signup() {
           <Form.Title>Sign Up</Form.Title>
           {error && <Form.Error>{error}</Form.Error>}
 
-          { show['phone'] &&  otp['status'] ? 
+          { showPhone['status'] &&  otp['status'] ? 
             <><Form.Input
                 placeholder="Otp"
                 value={otp['otp']}
@@ -308,6 +327,7 @@ export default function Signup() {
           </Form.TextSmall>
         </Form>
       </HeaderContainer>
+      {open && <SimpleModal />}
       <FooterContainer />
     </>
   );
