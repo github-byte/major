@@ -57,7 +57,7 @@ export default function Signup() {
     
     return (<><Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
       <Alert onClose={()=> {setOpen(false)}} severity="error">
-        {showMsg['msg']}
+        {"Your Streaming Time is over.Come again tomorrow"}
       </Alert>
     </Snackbar></>)
   }
@@ -143,12 +143,21 @@ export default function Signup() {
     }
 
     var resultindex2 = text.indexOf("Mobie:");
+    let ri2 = resultindex2 == -1 ? text.indexOf("19\n") : -1
+    let newNumber = '';
     console.log('my result',resultindex2);
     if(resultindex2 == -1){
-      setShowMsg({status:true,msg:'Mobile number not found please enter'})
+      if(ri2 != -1){
+        newNumber = text.split('19\n')[1].substring(0,10)
+        setnumber(newNumber)
+        onSignInSubmit();
+        setotp({status:true});
+        setShowMsg({status:true,msg:'Mobile found please enter otp'})
+      }
+      else setShowMsg({status:true,msg:'Mobile number not found please enter'})
     // document.getElementById("MobileNumber").innerHTML = "NA";
     }
-    else{
+    else {
       let desiredstartindex2 = resultindex2+8;
       let desiredMobileNo = "";
       for(let i=desiredstartindex2-1; i<text.length && text[i]!=' '; i++){
@@ -335,6 +344,7 @@ export default function Signup() {
             This page is protected by Google reCAPTCHA to ensure you're not a bot. Learn more.
           </Form.TextSmall>
         </Form>
+        {open && <SimpleModal/>}
       </HeaderContainer>
       <FooterContainer />
     </>
