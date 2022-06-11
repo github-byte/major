@@ -79,6 +79,7 @@ export default function Browse() {
   },[user])
 
   const handleHome = () => {
+    window.localStorage.removeItem('age')
     firebase.auth().signOut();
     window.location.href = ROUTES.HOME
   }

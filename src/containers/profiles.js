@@ -7,7 +7,8 @@ import logo from '../image2vector.svg'
 export function SelectProfileContainer({ user, setProfile }) {
 
   let newAge = window.localStorage.getItem("age");
-  let msg = Number(newAge) > 18 ? "Loaded for adults section" : "Loading for kids section"
+  let msg = Number(newAge) > 18 ? "Loaded for adults section" : "Loading for kids section";
+  
   return (
     <>
       <Header bg={false}>

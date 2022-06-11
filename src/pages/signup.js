@@ -22,13 +22,13 @@ export default function Signup() {
   const [showPhone,setShowPhone] = useState({status:false,age:0})
   const [mynumber, setnumber] = useState("");
   const [otp, setotp] = useState({status:false,otp:''});
-  const [show, setshow] = useState(false);
+  const [showMsg, setShowMsg] = useState({status:false,msg:''});
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [timeLimit,setTimeLimit] = useState("")
+  const [timeLimit,setTimeLimit] = useState("");
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   const [open, setOpen] = React.useState(false);
-  const isInvalid = firstName === '' || password === '' || emailAddress === '' || imagePath.length <= 0 || mynumber.length<10;
+  const isInvalid = firstName === '' || password === '' || emailAddress === '' || imagePath.length <= 0;
   const NumInvalid = mynumber.length < 10;
   const OtpValid = otp.length < 6
 
@@ -57,7 +57,7 @@ export default function Signup() {
     
     return (<><Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
       <Alert onClose={()=> {setOpen(false)}} severity="error">
-        Your streaming time is over!!
+        {showMsg['msg']}
       </Alert>
     </Snackbar></>)
   }
@@ -122,6 +122,7 @@ export default function Signup() {
   function DOBAndMobileNumberextraction(text=''){
     // var text = document.getElementById("mydemo").innerText;
     var resultindex1 = text.indexOf("DOB:");
+    console.log("age idex",resultindex1)
     // alert(text)
     // if(resultindex1==-1){
     //   // document.getElementById("DOB").innerHTML = "NA";
@@ -136,15 +137,15 @@ export default function Signup() {
       }
       let year = desiredDOB.slice(6,10)
       let age = 2022 - Number(year) 
-      console.log('my age',text,age)
+      console.log('my age',text,age,year)
       window.localStorage.setItem("age",age)
-      onSignInSubmit();
       setShowPhone({status:true,age:age})
     }
 
     var resultindex2 = text.indexOf("Mobie:");
     console.log('my result',resultindex2);
     if(resultindex2 == -1){
+      setShowMsg({status:true,msg:'Mobile number not found please enter'})
     // document.getElementById("MobileNumber").innerHTML = "NA";
     }
     else{
@@ -153,7 +154,14 @@ export default function Signup() {
       for(let i=desiredstartindex2-1; i<text.length && text[i]!=' '; i++){
         desiredMobileNo += text[i];
       }
-      console.log("desrs",desiredMobileNo)
+      console.log("desrs",desiredMobileNo.slice(0,10));
+      if(desiredMobileNo && desiredMobileNo.length>0 && desiredMobileNo.slice(0,10)){
+        let ph = desiredMobileNo.slice(0,10);
+        setnumber(ph)
+        onSignInSubmit();
+        setotp({status:true});
+        setShowMsg({status:true,msg:'Mobile found please enter otp'})
+      }
       // setShowPhone({})
           // document.getElementById("MobileNumber").innerHTML = desiredMobileNo;
     }
@@ -248,14 +256,22 @@ export default function Signup() {
         <Form>
           <Form.Title>Sign Up</Form.Title>
           {error && <Form.Error>{error}</Form.Error>}
-
-          { showPhone['status'] &&  otp['status'] ? 
-            <><Form.Input
+          {showMsg['status'] && <h4 style={{color: 'red',fontSize: '20px'}}>{showMsg['msg']}</h4>}
+          {showPhone['status'] ?  
+            <>
+            {!otp['status'] && <Form.Input
+              placeholder="Phone"
+              value={mynumber}
+              id="ph"
+              onChange={({ target }) => setnumber(target.value)}
+            />}
+            {otp['status'] && <Form.Input
                 placeholder="Otp"
                 value={otp['otp']}
                 id="otp"
-                onChange={(e) => setotp({status:otp['status'],otp:e.target.value})}/>
-              <Form.Submit disabled={OtpValid} type="submit" onClick={ValidateOtp}>{'Verify Otp' }</Form.Submit>
+                onChange={(e) => setotp({status:otp['status'],otp:e.target.value})}/>}
+              <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit>
+              <div id="recaptcha-container"></div>
             </>
               :
   
@@ -305,17 +321,10 @@ export default function Signup() {
               </div>
               {/* <button onClick={handleClick} style={{height:50}}>Convert to text</button> */}
               <div style={{display:'flex',flexDirection:'column',marginTop:"30px"}}>  
-                <Form.Input
-                placeholder="Phone"
-                value={mynumber}
-                id="ph"
-                onChange={({ target }) => setnumber(target.value)}
-              />
-              <div id="recaptcha-container"></div>
-              {/* <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit> */}
+             {/* <Form.Submit disabled={otp['status'] ? OtpValid : NumInvalid} type="submit" onClick={otp['status'] ? ValidateOtp : onSignInSubmit}>{otp['status'] ? 'Verify Otp' :'Get Otp'}</Form.Submit> */}
             </div> 
             <Form.Submit disabled={isInvalid} type="submit">
-              Sign Up
+             Proceed
             </Form.Submit>
           </Form.Base>}
 
@@ -327,7 +336,6 @@ export default function Signup() {
           </Form.TextSmall>
         </Form>
       </HeaderContainer>
-      {open && <SimpleModal />}
       <FooterContainer />
     </>
   );
