@@ -19,13 +19,21 @@ const config = {
   // messagingSenderId: "672257085914",
   // appId: "1:672257085914:web:95915e62913016e78970e3"
 
-  apiKey: "AIzaSyCkq1uIy6aWxTkzEiy0HCst6h0pGraElMk",
-  authDomain: "fp-2-3f4f9.firebaseapp.com",
-  projectId: "fp-2-3f4f9",
-  databaseURL:"https://fp-2-3f4f9-default-rtdb.firebaseio.com/",
-  storageBucket: "fp-2-3f4f9.appspot.com",
-  messagingSenderId: "236110241782",
-  appId: "1:236110241782:web:d0d7c329c96abe7cdaf1d7"
+  // apiKey: "AIzaSyCkq1uIy6aWxTkzEiy0HCst6h0pGraElMk",
+  // authDomain: "fp-2-3f4f9.firebaseapp.com",
+  // projectId: "fp-2-3f4f9",
+  // databaseURL:"https://fp-2-3f4f9-default-rtdb.firebaseio.com/",
+  // storageBucket: "fp-2-3f4f9.appspot.com",
+  // messagingSenderId: "236110241782",
+  // appId: "1:236110241782:web:d0d7c329c96abe7cdaf1d7"
+
+  apiKey: "AIzaSyAVmusKPvE7WP9KoHn1_CmwbqmbwMY_Xzg",
+  authDomain: "project-1-40520.firebaseapp.com",
+  databaseURL:"https://project-1-40520-default-rtdb.firebaseio.com",
+  projectId: "project-1-40520",
+  storageBucket: "project-1-40520.appspot.com",
+  messagingSenderId: "536895350549",
+  appId: "1:536895350549:web:27d9c87ccf692426426b1c"
 };
 
 const firebase = Firebase.initializeApp(config);

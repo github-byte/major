@@ -26,6 +26,7 @@ Player.Video = function PlayerVideo({ src, ...restProps }) {
         <Overlay onClick={() => setShowPlayer(false)} data-testid="player">
           <Inner>
           <ReactPlayer
+                playing={true}
                 url={link ? link : src}
                 controls
                 width = "896px"

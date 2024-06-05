@@ -31,22 +31,22 @@ export function ProtectedRoute({ user, children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) => {
-        if (user) {
-          return children;
-        }
+        return children;
+        // if (user) {
+        // }
 
-        if (!user) {
-          return (
-            <Redirect
-              to={{
-                pathname: 'signin',
-                state: { from: location },
-              }}
-            />
-          );
-        }
+        // if (!user) {
+        //   return (
+        //     <Redirect
+        //       to={{
+        //         pathname: 'signin',
+        //         state: { from: location },
+        //       }}
+        //     />
+        //   );
+        // }
 
-        return null;
+        // return null;
       }}
     />
   );

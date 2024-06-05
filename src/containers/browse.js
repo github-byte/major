@@ -26,11 +26,11 @@ export function BrowseContainer({ slides }) {
   const { firebase } = useContext(FirebaseContext);
   const user = firebase.auth().currentUser || {};
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, [profile.displayName]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3000);
+  // }, [profile.displayName]);
 
   console.log('my time',timeInHr)
 
@@ -146,9 +146,9 @@ export function BrowseContainer({ slides }) {
   
   const dateTimeAfterThreeDays = NOW_IN_MS + THREE_DAYS_IN_MS
   console.log("time noew",dateTimeAfterThreeDays/3600*4)
-  return profile.photoURL ? (
+  return (
     <>
-      {loading ? <Loading src={user.photoURL} /> : <Loading.ReleaseBody />}
+      {<Loading.ReleaseBody />}
 
       {!isWatchList && <Header src="joker1" dontShowOnSmallViewPort>
         <Header.Frame>
@@ -285,7 +285,8 @@ export function BrowseContainer({ slides }) {
       </Card.Group>}
       <FooterContainer />
     </>
-  ) : (
-    <SelectProfileContainer user={user} setProfile={setProfile} />
-  );
+  ) 
+  // : (
+  //   <SelectProfileContainer user={user} setProfile={setProfile} />
+  // );
 }
